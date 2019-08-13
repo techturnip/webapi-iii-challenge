@@ -1,11 +1,15 @@
 const express = require('express')
-
-const server = express()
-
 const userRouter = require('./users/userRouter')
+const server = express()
+const bodyParser = express.json()
 
+// built in middleware
+server.use(bodyParser)
+
+// custom middleware
 server.use(logger)
 
+// router
 server.use('/api/users/', userRouter)
 
 server.get('/', (req, res) => {
