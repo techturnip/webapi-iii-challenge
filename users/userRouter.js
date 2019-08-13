@@ -82,7 +82,17 @@ router.get('/:id/posts', validateUserId, async (req, res) => {
 })
 
 // DELETE - '/api/users/:id' - Deletes specified user
-router.delete('/:id', (req, res) => {})
+router.delete('/:id', validateUserId, async (req, res) => {
+  try {
+    const userToBeDeleted = await Users.remove(req.params.id)
+
+    res.status(200).json(req.user)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Could not delete specified user'
+    })
+  }
+})
 
 // PUT - '/api/users/:id' - Updates specified user
 router.put('/:id', (req, res) => {})
