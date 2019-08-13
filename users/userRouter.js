@@ -86,6 +86,7 @@ router.delete('/:id', validateUserId, async (req, res) => {
   try {
     const userToBeDeleted = await Users.remove(req.params.id)
 
+    // returns the user that was deleted
     res.status(200).json(req.user)
   } catch (error) {
     res.status(500).json({
@@ -95,7 +96,20 @@ router.delete('/:id', validateUserId, async (req, res) => {
 })
 
 // PUT - '/api/users/:id' - Updates specified user
-router.put('/:id', (req, res) => {})
+router.put('/:id', validateUserId, validateUser, async (req, res) => {
+  try {
+    const updateUser = await Users.update(req.params.id, req.body)
+
+    const updatedUser = await Users.getById(req.params.id)
+
+    res.status(200).json(updatedUser)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'Could not update specified user'
+    })
+  }
+})
 
 //custom middleware
 function validateUserId(req, res, next) {
