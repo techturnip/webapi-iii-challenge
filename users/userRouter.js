@@ -25,9 +25,12 @@ router.post('/', validateUser, async (req, res) => {
 // specified user
 router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
   try {
+    // Make sure the id in params is the same as the one
+    // stored in validateUserId middleware
     if (req.user.id === Number(req.params.id)) {
+      // add user_id property to the post obj before
+      // inserting into the database
       req.body.user_id = req.user.id
-      console.log(req.body)
 
       const newPost = await Posts.insert(req.body)
 
@@ -65,7 +68,18 @@ router.get('/:id', validateUserId, async (req, res) => {
 
 // GET - '/api/users/:id/posts' - Returns specified
 // user's posts
-router.get('/:id/posts', (req, res) => {})
+router.get('/:id/posts', validateUserId, async (req, res) => {
+  try {
+    const userPosts = await Users.getUserPosts(req.params.id)
+
+    res.status(200).json(userPosts)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: "Could not get specified user's posts"
+    })
+  }
+})
 
 // DELETE - '/api/users/:id' - Deletes specified user
 router.delete('/:id', (req, res) => {})
