@@ -33,7 +33,18 @@ router.get('/:id', validatePostId, async (req, res) => {
   }
 })
 
-router.delete('/:id', validatePostId, (req, res) => {})
+router.delete('/:id', validatePostId, async (req, res) => {
+  try {
+    const deletePost = await Posts.remove(req.params.id)
+
+    res.status(200).json(req.post)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'Could not remove specified post from the database'
+    })
+  }
+})
 
 router.put('/:id', validatePostId, (req, res) => {})
 
