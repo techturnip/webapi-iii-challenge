@@ -7,7 +7,6 @@ const Posts = require('../posts/postDb')
 
 // REQ HANDLERS -----------------------------------|
 // ------------------------------------------------|
-
 // POST - '/api/users' - inserts a new user to the
 // database and returns the new user object
 router.post('/', validateUser, async (req, res) => {
@@ -20,7 +19,7 @@ router.post('/', validateUser, async (req, res) => {
     res.status(500).json({ message: 'Unable to add user to database' })
   }
 })
-
+// ------------------------------------------------|
 // POST - '/api/users' - inserts a new post for
 // specified user
 router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
@@ -47,7 +46,7 @@ router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 // GET - '/api/users' - Returns all users
 router.get('/', async (req, res) => {
   try {
@@ -60,12 +59,12 @@ router.get('/', async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 // GET - '/api/users/:id' - Returns a specified user
 router.get('/:id', validateUserId, async (req, res) => {
   res.status(200).json(req.user)
 })
-
+// ------------------------------------------------|
 // GET - '/api/users/:id/posts' - Returns specified
 // user's posts
 router.get('/:id/posts', validateUserId, async (req, res) => {
@@ -80,7 +79,7 @@ router.get('/:id/posts', validateUserId, async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 // DELETE - '/api/users/:id' - Deletes specified user
 router.delete('/:id', validateUserId, async (req, res) => {
   try {
@@ -94,7 +93,7 @@ router.delete('/:id', validateUserId, async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 // PUT - '/api/users/:id' - Updates specified user
 router.put('/:id', validateUserId, validateUser, async (req, res) => {
   try {
@@ -132,7 +131,7 @@ function validateUserId(req, res, next) {
       })
     })
 }
-
+// ------------------------------------------------|
 function validateUser(req, res, next) {
   if (req.body && Object.keys(req.body).length > 0) {
     const { name } = req.body
@@ -156,7 +155,7 @@ function validateUser(req, res, next) {
     })
   }
 }
-
+// ------------------------------------------------|
 function validatePost(req, res, next) {
   if (req.body && Object.keys(req.body).length > 0) {
     const { text } = req.body
@@ -176,5 +175,5 @@ function validatePost(req, res, next) {
     res.status(400).json({ message: 'Missing post data' })
   }
 }
-
+// ------------------------------------------------|
 module.exports = router

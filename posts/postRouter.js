@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 router.get('/:id', validatePostId, async (req, res) => {
   try {
     const post = await Posts.getById(req.params.id)
@@ -32,7 +32,7 @@ router.get('/:id', validatePostId, async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 router.delete('/:id', validatePostId, async (req, res) => {
   try {
     const deletePost = await Posts.remove(req.params.id)
@@ -45,7 +45,7 @@ router.delete('/:id', validatePostId, async (req, res) => {
     })
   }
 })
-
+// ------------------------------------------------|
 router.put('/:id', validatePostId, validatePost, async (req, res) => {
   try {
     const updatedPost = await Posts.update(req.post.id, req.body)
@@ -82,7 +82,7 @@ function validatePostId(req, res, next) {
       })
     })
 }
-
+// ------------------------------------------------|
 function validatePost(req, res, next) {
   if (req.body && Object.keys(req.body).length > 0) {
     const { text } = req.body
