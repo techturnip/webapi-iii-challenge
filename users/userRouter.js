@@ -1,12 +1,17 @@
+// IMPORTS/INITIALIZATION =========================|
+// ================================================|
+// import express ---------------------------------|
 const express = require('express')
-
+// ------------------------------------------------|
+// bring in express router ------------------------|
 const router = express.Router()
-
+// ------------------------------------------------|
+// bring in DB operations -------------------------|
 const Users = require('./userDb')
 const Posts = require('../posts/postDb')
-
-// REQ HANDLERS -----------------------------------|
 // ------------------------------------------------|
+// REQ HANDLERS ===================================|
+// ================================================|
 // POST - '/api/users' - inserts a new user to the
 // database and returns the new user object
 router.post('/', validateUser, async (req, res) => {
@@ -109,9 +114,9 @@ router.put('/:id', validateUserId, validateUser, async (req, res) => {
     })
   }
 })
-
-// CUSTOM MIDDLEWARE ------------------------------|
 // ------------------------------------------------|
+// CUSTOM MIDDLEWARE ==============================|
+// ================================================|
 function validateUserId(req, res, next) {
   const { id } = req.params
 
@@ -176,4 +181,6 @@ function validatePost(req, res, next) {
   }
 }
 // ------------------------------------------------|
+// EXPORT ROUTER ==================================|
+// ================================================|
 module.exports = router

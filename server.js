@@ -1,27 +1,36 @@
+// SERVER SETUP ===================================|
+// ================================================|
+
+// IMPORTS/INITIALIZATION =========================|
+// ================================================|
+// import express ---------------------------------|
 const express = require('express')
-// import routers
+// import routers ---------------------------------|
 const userRouter = require('./users/userRouter')
 const postRouter = require('./posts/postRouter')
-
+// hookup server to express -----------------------|
 const server = express()
-
+// intialize the body parser module ---------------|
 const bodyParser = express.json()
-
-// built in middleware
+// ------------------------------------------------|
+// BRING IN MIDDLEWARE ============================|
+// ================================================|
+// bring in body parser module as middleware ------|
 server.use(bodyParser)
-
-// custom middleware
+// bring in custom middleware - defined below -----|
 server.use(logger)
-
-// router
+// setup router endpoints -------------------------|
 server.use('/api/users/', userRouter)
 server.use('/api/posts/', postRouter)
-
+// ------------------------------------------------|
+// DEFINE ROOT ROUTE ==============================|
+// ================================================|
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`)
 })
-
-//custom middleware
+// ------------------------------------------------|
+// DEFINE CUSTOM MIDDLEWARE =======================|
+// ================================================|
 function logger(req, res, next) {
   console.log(
     `Request to URL: '${req.url}' | Method: ${
@@ -30,5 +39,7 @@ function logger(req, res, next) {
   )
   next()
 }
-
+// ------------------------------------------------|
+// EXPORT SERVER ==================================|
+// ================================================|
 module.exports = server

@@ -1,12 +1,17 @@
+// IMPORTS/INITIALIZATION =========================|
+// ================================================|
+// import express ---------------------------------|
 const express = require('express')
-
-const router = express.Router()
-
-const Posts = require('./postDb')
-
-// REQ HANDLERS -----------------------------------|
 // ------------------------------------------------|
-
+// bring in express router ------------------------|
+const router = express.Router()
+// ------------------------------------------------|
+// bring in DB operations -------------------------|
+const Posts = require('./postDb')
+// ------------------------------------------------|
+// REQ HANDLERS ===================================|
+// ================================================|
+// GET - '/api/posts' - Returns all posts
 router.get('/', async (req, res) => {
   try {
     const posts = await Posts.get()
@@ -20,6 +25,8 @@ router.get('/', async (req, res) => {
   }
 })
 // ------------------------------------------------|
+// GET - '/api/posts/:id' - Returns a single post
+// by the specified id
 router.get('/:id', validatePostId, async (req, res) => {
   try {
     const post = await Posts.getById(req.params.id)
@@ -33,6 +40,8 @@ router.get('/:id', validatePostId, async (req, res) => {
   }
 })
 // ------------------------------------------------|
+// DELETE - '/api/posts/:id' - Deletes a post by
+// the specified id
 router.delete('/:id', validatePostId, async (req, res) => {
   try {
     const deletePost = await Posts.remove(req.params.id)
@@ -46,6 +55,8 @@ router.delete('/:id', validatePostId, async (req, res) => {
   }
 })
 // ------------------------------------------------|
+// PUT - '/api/posts/:id' - Updates a post by the
+// specified id, passing changes w/ req.body
 router.put('/:id', validatePostId, validatePost, async (req, res) => {
   try {
     const updatedPost = await Posts.update(req.post.id, req.body)
@@ -58,16 +69,22 @@ router.put('/:id', validatePostId, validatePost, async (req, res) => {
     })
   }
 })
-
-// CUSTOM MIDDLEWARE ------------------------------|
 // ------------------------------------------------|
+// CUSTOM MIDDLEWARE ==============================|
+// ================================================|
 function validatePostId(req, res, next) {
   const { id } = req.params
 
+  // Use the getById() method to verify that the
+  // id url parameter is valid
   Posts.getById(id)
     .then(post => {
       if (post) {
+        // Store the post that is retrieved into
+        // the request - can be accessed inside of
+        // the request handlers
         req.post = post
+        // Move on to the request handler
         next()
       } else {
         res.status(404).json({
@@ -102,5 +119,7 @@ function validatePost(req, res, next) {
     res.status(400).json({ message: 'Missing post data' })
   }
 }
-
+// ------------------------------------------------|
+// EXPORT ROUTER ==================================|
+// ================================================|
 module.exports = router
