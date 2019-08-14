@@ -111,7 +111,8 @@ router.put('/:id', validateUserId, validateUser, async (req, res) => {
   }
 })
 
-//custom middleware
+// CUSTOM MIDDLEWARE ------------------------------|
+// ------------------------------------------------|
 function validateUserId(req, res, next) {
   const { id } = req.params
 
